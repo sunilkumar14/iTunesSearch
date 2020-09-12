@@ -14,6 +14,17 @@ iOS: Open iTuneSearch folder -> ios -> double tap on "iTunesSearch.xcworkspace"
 
 Screens:
 
-Search -> Filter -> Details screens
+SearchList
+
+![SearchList](https://user-images.githubusercontent.com/8392585/92988402-ce5cce00-f4e8-11ea-856e-19259295a2c6.png)
+
+Filter
+
+![FilterScreen](https://user-images.githubusercontent.com/8392585/92988414-ed5b6000-f4e8-11ea-8dfc-7abf65294a76.png)
+
+
+Details screens
+
+![DetailsScreen](https://user-images.githubusercontent.com/8392585/92988419-ffd59980-f4e8-11ea-9e0e-99b661056fac.png)
 
 
