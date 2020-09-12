@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 2,
     borderRadius: 20,
+    flex: 1,
   },
   loadingContainer: {
     justifyContent: 'center',
