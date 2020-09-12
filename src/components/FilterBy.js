@@ -84,7 +84,7 @@ export default class FilterBy extends Component {
   renderHeader({section}) {
     return (
       <View style={styles.titleContainer}>
-        <Text style={[styles.close, {color: 'black'}]}>{section.title}</Text>
+        <Text style={[styles.close, styles.headerText]}>{section.title}</Text>
       </View>
     );
   }
@@ -147,5 +147,8 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     marginVertical: 10,
+  },
+  headerText: {
+    color: 'black',
   },
 });

@@ -27,25 +27,6 @@ export default class Search extends React.Component {
     this.renderEachItem = this.renderEachItem.bind(this);
   }
 
-  getSearchResult = async () => {
-    this.setState({loading: true});
-    try {
-      const response = await fetch(
-        `https://itunes.apple.com/search?term=${this.state.searchName}&entity=${
-          this.state.entity
-        }&limit=${25}`,
-      );
-      const result = await response.json();
-      this.setState({
-        searchResults: result.results,
-        loading: false,
-        selectedTrackId: -1,
-      });
-    } catch (error) {
-      this.setState({loading: false, selectedTrackId: -1, searchFailed: true});
-    }
-  };
-
   render() {
     return (
       <View style={styles.container}>
@@ -79,7 +60,13 @@ export default class Search extends React.Component {
   };
 
   renderButton() {
-    return <Button title="Search" onPress={this.getSearchResult} />;
+    return (
+      <Button
+        style={styles.searchButton}
+        title="Search"
+        onPress={this.getSearchResult}
+      />
+    );
   }
 
   renderFilterByTitle() {
@@ -88,9 +75,7 @@ export default class Search extends React.Component {
         <TouchableOpacity
           style={styles.filterTextContainer}
           onPress={() => this.setState({visibleModal: true})}>
-          <Text style={{fontWeight: '600'}}>
-            Filter By: {this.state.entity || 'All'}
-          </Text>
+          <Text>Filter By: {this.state.entity || 'All'}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -115,7 +100,7 @@ export default class Search extends React.Component {
         renderItem={this.renderEachItem}
         keyExtractor={(item, index) => item + index}
         numColumns={2}
-        columnWrapperStyle={{justifyContent: 'space-between'}}
+        columnWrapperStyle={styles.gridColumn}
         onEndReachedThreshold={0.5}
         onEndReached={this.loadMoreItems}
         ListFooterComponent={this.renderListFooter()}
@@ -153,6 +138,42 @@ export default class Search extends React.Component {
     ) : null;
   }
 
+  renderFilterModal() {
+    return (
+      <FilterBy
+        visibleModal={this.state.visibleModal}
+        dismissModal={this.dismissModal}
+        selectedItem={this.state.entity}
+      />
+    );
+  }
+
+  dismissModal = (filtervalue) => {
+    const value = filtervalue !== '' ? filtervalue : this.state.entity;
+    this.setState({visibleModal: false, entity: value}, () =>
+      this.getSearchResult(),
+    );
+  };
+
+  getSearchResult = async () => {
+    this.setState({loading: true});
+    try {
+      const response = await fetch(
+        `https://itunes.apple.com/search?term=${this.state.searchName}&entity=${
+          this.state.entity
+        }&limit=${25}`,
+      );
+      const result = await response.json();
+      this.setState({
+        searchResults: result.results,
+        loading: false,
+        selectedTrackId: -1,
+      });
+    } catch (error) {
+      this.setState({loading: false, selectedTrackId: -1, searchFailed: true});
+    }
+  };
+
   loadMoreItems = async (info) => {
     if (info.distanceFromEnd > 0) {
       this.setState({loadMore: true});
@@ -171,22 +192,6 @@ export default class Search extends React.Component {
     }
   };
 
-  renderFilterModal() {
-    return (
-      <FilterBy
-        visibleModal={this.state.visibleModal}
-        dismissModal={this.dismissModal}
-        selectedItem={this.state.entity}
-      />
-    );
-  }
-
-  dismissModal = (filtervalue) => {
-    const value = filtervalue !== '' ? filtervalue : this.state.entity;
-    this.setState({visibleModal: false, entity: value}, () =>
-      this.getSearchResult(),
-    );
-  };
 }
 
 const styles = StyleSheet.create({
@@ -218,7 +223,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 2,
-    flex: 1,
     borderRadius: 20,
   },
   loadingContainer: {
@@ -230,5 +234,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 15,
+  },
+  gridColumn:{
+    justifyContent: 'space-between',
   },
 });

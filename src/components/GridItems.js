@@ -25,7 +25,7 @@ export default class GridItems extends Component {
   renderText(title, name) {
     return (
       <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.textStyle}>
-        {title}: <Text style={{fontWeight: '400'}}>{name}</Text>
+        {title}: <Text>{name}</Text>
       </Text>
     );
   }
